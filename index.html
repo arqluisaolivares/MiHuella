@@ -123,23 +123,16 @@
   /* ---------- QUIZ ---------- */
   .quiz-wrap{ max-width:980px; width:100%; margin:0 auto; display:flex; flex-direction:column; flex:1; }
   .quiz-header{ margin-bottom:20px; }
-  .quiz-body{ display:grid; grid-template-columns:300px 1fr; gap:26px; align-items:stretch; flex:1; }
-  .quiz-illustration{
-    position:relative;
-    border-radius: 62% 38% 55% 45% / 48% 42% 58% 52%;
-    display:flex; align-items:center; justify-content:center;
-    padding:24px; min-height:260px;
-    background: var(--critter-bg, #EEE);
-    animation: blobMorph 9s ease-in-out infinite;
-    box-shadow: 0 14px 34px rgba(27,43,58,.12);
-  }
-  @keyframes blobMorph{
-    0%,100%{ border-radius: 62% 38% 55% 45% / 48% 42% 58% 52%; }
-    50%{ border-radius: 45% 55% 40% 60% / 55% 45% 55% 45%; }
-  }
-  .quiz-illustration svg{ width:100%; height:auto; max-width:220px; position:relative; z-index:1; }
-  .quiz-main{ display:flex; flex-direction:column; }
+  .quiz-body{ flex:1; display:flex; justify-content:center; }
+  .quiz-main{ width:100%; max-width:700px; display:flex; flex-direction:column; position:relative; }
   .quiz-main .question-card{ flex:1; }
+  .quiz-illustration{
+    position:absolute; top:50%; right:calc(100% + 26px); width:150px; z-index:2;
+    transform:translateY(-50%);
+    display:flex; align-items:center; justify-content:center; padding:0; pointer-events:none;
+  }
+  .quiz-illustration svg{ width:100%; height:auto; max-width:150px; animation: illustFloat 4.5s ease-in-out infinite; filter: drop-shadow(0 10px 16px rgba(27,43,58,.22)); }
+  @keyframes illustFloat{ 0%,100%{ transform:translateY(0) rotate(-3deg);} 50%{ transform:translateY(-9px) rotate(2deg);} }
 
   .cat-dots{ display:flex; gap:10px; margin-bottom:14px; }
   .dot{ flex:1; height:7px; border-radius:5px; background:rgba(255,255,255,0.55); overflow:hidden; position:relative; border:1px solid var(--line); }
@@ -183,8 +176,8 @@
   .result-planets{ display:flex; justify-content:center; gap:6px; margin-bottom:10px; }
   .planet-slot{ width:22px; height:22px; }
 
-  .tier-msg{ background:#F7FAFB; border-radius:12px; padding:10px 12px; font-size:12px; line-height:1.45; text-align:left; width:100%; }
-  .tier-msg b{ display:block; font-family:var(--font-display); font-size:13px; margin-bottom:3px; }
+  .tier-msg{ background:#F7FAFB; border-radius:12px; padding:12px 14px; font-size:12.5px; line-height:1.5; text-align:left; width:100%; border:1px solid transparent; }
+  .tier-msg b{ display:flex; align-items:center; gap:6px; font-family:var(--font-display); font-size:15px; margin-bottom:4px; }
 
   .panel-sub{ font-size:11.5px; color:var(--ink-soft); margin:0 0 8px; line-height:1.4; }
 
@@ -208,10 +201,8 @@
   .tip-box{ background: color-mix(in srgb, var(--c-home) 24%, white); border:1px solid color-mix(in srgb, var(--c-home) 55%, white); border-radius:12px; padding:10px 12px; font-size:12px; line-height:1.45; margin-top:8px; }
   .tip-box b{ display:block; margin-bottom:2px; font-family:var(--font-display); font-size:12.5px; }
 
-  .results-bottom{ display:grid; grid-template-columns: 1.3fr 1fr; gap:16px; align-items:stretch; }
-  .fun-facts-block{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px 16px; box-shadow:0 10px 22px rgba(27,43,58,.08); display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .fun-facts-title{ font-size:12px; font-weight:700; color:var(--ink-soft); margin:0 0 10px; text-align:center; }
-  .fun-facts-row{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .results-bottom{ display:flex; justify-content:center; }
+  .results-bottom .results-actions{ max-width:520px; width:100%; }
   .critter-btn{ display:flex; align-items:center; justify-content:center; background:none; border:none; cursor:pointer; padding:2px; border-radius:50%; transition:transform .15s ease; }
   .critter-btn:hover{ transform:translateY(-3px) scale(1.06); }
   .critter-btn:active{ transform:scale(.92); }
@@ -225,6 +216,29 @@
   .btn-secondary{ background:#fff; border:1.5px solid var(--line); color:var(--ink); }
   .mini-caption{ font-size:10.5px; color:var(--ink-soft); text-align:center; margin:0; }
   .link-inline{ background:none; border:none; color:var(--brand-dark); font-weight:700; text-decoration:underline; cursor:pointer; font-size:10.5px; padding:0; font-family:var(--font-body); }
+
+  /* franja fija de dato curioso */
+  .fact-corner-tab{
+    position:fixed; right:26px; bottom:26px; z-index:40;
+    display:flex; align-items:center; gap:14px;
+    background:linear-gradient(135deg, #FFC93C, #FF8A3D);
+    border:4px solid #fff; border-radius:999px; padding:12px 28px 12px 12px;
+    box-shadow:0 18px 40px rgba(232,138,43,.6);
+    cursor:pointer; animation: cornerBounce 2.2s ease-in-out infinite;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .fact-corner-tab:hover{ animation-play-state:paused; transform:translateY(-5px) scale(1.08); box-shadow:0 22px 46px rgba(232,138,43,.7); }
+  .fact-corner-tab:active, .fact-corner-tab.clicked{ transform:scale(.9) rotate(-4deg); }
+  .fact-corner-pulse{ position:absolute; inset:-4px; border-radius:999px; border:3px solid #FFC93C; animation:cornerPulse 1.8s ease-out infinite; }
+  .fact-corner-pulse2{ position:absolute; inset:-4px; border-radius:999px; border:3px solid #FF8A3D; animation:cornerPulse 1.8s ease-out infinite; animation-delay:.6s; }
+  @keyframes cornerPulse{ 0%{ transform:scale(1); opacity:.65;} 100%{ transform:scale(1.5); opacity:0;} }
+  .fact-corner-icon{ background:#fff; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:inset 0 0 0 1px rgba(0,0,0,.04); }
+  .fact-corner-icon svg{ width:40px; height:40px; }
+  .bee-wing{ animation: beeWing .22s ease-in-out infinite alternate; transform-box:fill-box; transform-origin:100% 50%; }
+  @keyframes beeWing{ from{ transform:scaleY(1);} to{ transform:scaleY(.6);} }
+  .fact-corner-text{ font-family:var(--font-body); font-size:15px; line-height:1.28; color:#fff; text-align:left; text-shadow:0 1px 3px rgba(0,0,0,.18); }
+  .fact-corner-text b{ font-size:17px; }
+  @keyframes cornerBounce{ 0%,50%,100%{ transform:translateY(0) rotate(0deg);} 25%{ transform:translateY(-10px) rotate(-3deg);} 75%{ transform:translateY(-4px) rotate(2deg);} }
 
   /* tarjeta emergente (dato curioso / información) */
   .fact-modal-backdrop{ position:fixed; inset:0; background:rgba(20,34,30,0.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:60; padding:24px; }
@@ -247,9 +261,13 @@
     .results-grid3{ grid-template-columns:1fr; }
     .results-bottom{ grid-template-columns:1fr; }
     .question-card{ padding:26px 22px; }
-    .quiz-body{ grid-template-columns:1fr; }
-    .quiz-illustration{ min-height:180px; }
-    .quiz-illustration svg{ max-width:180px; }
+    .quiz-illustration{ position:static; width:110px; margin:0 auto -14px; }
+    .quiz-illustration svg{ max-width:110px; }
+    .fact-corner-tab{ right:14px; bottom:14px; padding:9px 18px 9px 9px; gap:10px; }
+    .fact-corner-icon{ width:46px; height:46px; }
+    .fact-corner-icon svg{ width:32px; height:32px; }
+    .fact-corner-text{ font-size:12.5px; }
+    .fact-corner-text b{ font-size:14px; }
   }
 </style>
 </head>
@@ -607,8 +625,8 @@
       </header>
 
       <div class="quiz-body">
-        <div class="quiz-illustration" id="quiz-illustration"></div>
         <div class="quiz-main">
+          <div class="quiz-illustration" id="quiz-illustration"></div>
           <div class="question-card glass">
             <span class="cat-tag" id="cat-tag">Alimentación</span>
             <h2 class="q-text" id="q-text"></h2>
@@ -660,11 +678,6 @@
     </div>
 
     <div class="results-bottom">
-      <div class="fun-facts-block">
-        <p class="fun-facts-title">🐾 Toca un animal y descubre un dato curioso</p>
-        <div class="fun-facts-row" id="fun-facts-row"></div>
-      </div>
-
       <div class="results-actions">
         <p class="submit-status" id="submit-status" aria-live="polite"></p>
         <div class="actions-row">
@@ -675,12 +688,30 @@
       </div>
     </div>
 
+    <!-- franja fija de dato curioso -->
+    <button class="fact-corner-tab" id="fact-corner-tab" type="button">
+      <span class="fact-corner-pulse"></span>
+      <span class="fact-corner-pulse2"></span>
+      <span class="fact-corner-icon">
+        <svg viewBox="0 0 40 40">
+          <path class="bee-wing" d="M15,15 Q1,3 4,20 Q10,18 15,15 Z" fill="rgba(255,255,255,0.85)"/>
+          <path class="bee-wing" d="M25,15 Q39,3 36,20 Q30,18 25,15 Z" fill="rgba(255,255,255,0.85)"/>
+          <ellipse cx="21" cy="24" rx="11" ry="9" fill="#2B2320"/>
+          <path d="M10,21 h22 M10,27 h22" stroke="#FFC93C" stroke-width="4"/>
+          <circle cx="13" cy="15" r="6" fill="#2B2320"/>
+          <path d="M10,11 q-4,-5 -7,-3 M16,10 q1,-5 3,-6" stroke="#2B2320" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <circle cx="11" cy="15" r="1.3" fill="#fff"/>
+        </svg>
+      </span>
+      <span class="fact-corner-text">¡Pica aquí!<br><b>Dato curioso</b></span>
+    </button>
+
     <!-- tarjeta emergente de dato curioso -->
     <div class="fact-modal-backdrop" id="fact-modal-backdrop">
       <div class="fact-modal-card">
         <button class="fact-modal-close" id="fact-modal-close" type="button" aria-label="Cerrar">✕</button>
         <div class="fact-modal-icon" id="fact-modal-icon"></div>
-        <p class="fact-modal-eyebrow">✨ Tu dato curioso es...</p>
+        <p class="fact-modal-eyebrow">🤯 ¿Sabías que...?</p>
         <p class="fact-modal-name" id="fact-modal-name"></p>
         <p class="fact-modal-text" id="fact-modal-text"></p>
       </div>
@@ -933,11 +964,11 @@
 
   // Puntos de comparación de referencia, en hectáreas globales (hag) por persona.
   var COUNTRY_DATA = [
-    { name:"Biocapacidad disponible por persona", value:1.6 },
-    { name:"Colombia (promedio)", value:2.0 },
-    { name:"Promedio mundial", value:2.7 },
-    { name:"Estados Unidos", value:8.2 },
-    { name:"Qatar (uno de los más altos del mundo)", value:14.0 }
+    { name:"🌎 Biocapacidad disponible", value:1.6 },
+    { name:"🇨🇴 Colombia (promedio)", value:2.0 },
+    { name:"🌍 Promedio mundial", value:2.7 },
+    { name:"🇺🇸 Estados Unidos", value:8.2 },
+    { name:"🇶🇦 Qatar (de los más altos)", value:14.0 }
   ];
   var COMPARE_MAX = 15;
 
@@ -966,47 +997,68 @@
     Object.keys(screens).forEach(function(k){ screens[k].classList.toggle("screen--active", k === name); });
   }
 
-  var CRITTERS = [
-    { name:"Vaca", cta:"¡Atrápame!", bg:"#FDE7D0",
-      icon:'<circle cx="24" cy="26" r="16" fill="#FFFFFF"/><path d="M10,20 Q16,10 24,16 Q32,10 38,20 Q34,14 26,17 Q24,14 22,17 Q14,14 10,20 Z" fill="#2B2320"/><ellipse cx="8" cy="18" rx="4" ry="6" fill="#FFFFFF"/><ellipse cx="40" cy="18" rx="4" ry="6" fill="#FFFFFF"/><circle cx="18" cy="27" r="2" fill="#1B2B3A"/><circle cx="30" cy="27" r="2" fill="#1B2B3A"/><ellipse cx="24" cy="35" rx="6" ry="4" fill="#F2B5C4"/>',
-      fact:"Las vacas y otros rumiantes producen metano al digerir el pasto — uno de los gases de efecto invernadero más potentes que existen." },
-    { name:"Gallina", cta:"¡Espíchame!", bg:"#FFF3C4",
-      icon:'<circle cx="22" cy="26" r="15" fill="#FFFDF6"/><polygon points="34,24 44,27 34,30" fill="#FFC93C"/><path d="M15,10 q3,-6 6,-2 q3,-6 6,2" fill="#E8623A"/><circle cx="14" cy="24" r="2" fill="#1B2B3A"/><circle cx="28" cy="20" r="2" fill="#1B2B3A"/>',
-      fact:"El estiércol de gallinero es un abono natural excelente — nada se desperdicia cuando se composta bien." },
-    { name:"Oveja", cta:"¡Tócame!", bg:"#E8ECEF",
-      icon:'<circle cx="24" cy="26" r="15" fill="#F7F7F2"/><circle cx="13" cy="16" r="6" fill="#F7F7F2"/><circle cx="35" cy="16" r="6" fill="#F7F7F2"/><circle cx="10" cy="26" r="6" fill="#F7F7F2"/><circle cx="38" cy="26" r="6" fill="#F7F7F2"/><ellipse cx="24" cy="28" rx="10" ry="9" fill="#3A3530"/><circle cx="20" cy="26" r="2" fill="#FFFFFF"/><circle cx="28" cy="26" r="2" fill="#FFFFFF"/>',
-      fact:"La lana de oveja es un material renovable: crece de nuevo cada año, a diferencia de muchas fibras hechas de petróleo." },
-    { name:"Mariposa", cta:"¡Descúbreme!", bg:"#F0E0FA",
-      icon:'<path d="M24,24 Q10,6 6,20 Q8,32 24,26 Z" fill="#B15DE0"/><path d="M24,24 Q38,6 42,20 Q40,32 24,26 Z" fill="#2FA8E0"/><path d="M24,24 Q12,34 8,40 Q16,38 24,30 Z" fill="#FF5D8F"/><path d="M24,24 Q36,34 40,40 Q32,38 24,30 Z" fill="#FFC93C"/><rect x="22.5" y="16" width="3" height="20" rx="1.5" fill="#1B2B3A"/>',
-      fact:"Las mariposas, como las abejas, son polinizadoras — sin ellas, muchos cultivos que comemos no darían frutos." },
-    { name:"Rana", cta:"¡Actívame!", bg:"#DFF6E4",
-      icon:'<circle cx="24" cy="28" r="15" fill="#3FC96E"/><circle cx="14" cy="16" r="7" fill="#3FC96E"/><circle cx="34" cy="16" r="7" fill="#3FC96E"/><circle cx="14" cy="16" r="3.5" fill="#FFFFFF"/><circle cx="34" cy="16" r="3.5" fill="#FFFFFF"/><circle cx="14" cy="16" r="1.6" fill="#1B2B3A"/><circle cx="34" cy="16" r="1.6" fill="#1B2B3A"/><path d="M16,32 Q24,38 32,32" stroke="#1B2B3A" stroke-width="2" fill="none" stroke-linecap="round"/>',
-      fact:"La piel de las ranas es tan sensible que absorbe todo lo que hay en el agua — por eso desaparecen rápido cuando una fuente se contamina." },
-    { name:"Tortuga", cta:"¡Ábreme!", bg:"#E3F0DC",
-      icon:'<ellipse cx="22" cy="28" rx="16" ry="13" fill="#7BB661"/><path d="M22,15 L28,24 L22,33 L16,24 Z" fill="#5A9A47"/><path d="M8,28 L16,24 L16,32 Z" fill="#5A9A47"/><path d="M36,28 L28,24 L28,32 Z" fill="#5A9A47"/><circle cx="38" cy="26" r="6" fill="#8FCB78"/><circle cx="41" cy="24" r="1.6" fill="#1B2B3A"/>',
-      fact:"Algunas tortugas viven más de 50 años. Se mueven despacio, pero su huella también pesa mucho menos que la de otros animales grandes." }
+  var FACT_ICONS = [
+    '<circle cx="24" cy="26" r="16" fill="#FFFFFF"/><path d="M10,20 Q16,10 24,16 Q32,10 38,20 Q34,14 26,17 Q24,14 22,17 Q14,14 10,20 Z" fill="#2B2320"/><ellipse cx="8" cy="18" rx="4" ry="6" fill="#FFFFFF"/><ellipse cx="40" cy="18" rx="4" ry="6" fill="#FFFFFF"/><circle cx="18" cy="27" r="2" fill="#1B2B3A"/><circle cx="30" cy="27" r="2" fill="#1B2B3A"/><ellipse cx="24" cy="35" rx="6" ry="4" fill="#F2B5C4"/>',
+    '<circle cx="22" cy="26" r="15" fill="#FFFDF6"/><polygon points="34,24 44,27 34,30" fill="#FFC93C"/><path d="M15,10 q3,-6 6,-2 q3,-6 6,2" fill="#E8623A"/><circle cx="14" cy="24" r="2" fill="#1B2B3A"/><circle cx="28" cy="20" r="2" fill="#1B2B3A"/>',
+    '<circle cx="24" cy="26" r="15" fill="#F7F7F2"/><circle cx="13" cy="16" r="6" fill="#F7F7F2"/><circle cx="35" cy="16" r="6" fill="#F7F7F2"/><circle cx="10" cy="26" r="6" fill="#F7F7F2"/><circle cx="38" cy="26" r="6" fill="#F7F7F2"/><ellipse cx="24" cy="28" rx="10" ry="9" fill="#3A3530"/><circle cx="20" cy="26" r="2" fill="#FFFFFF"/><circle cx="28" cy="26" r="2" fill="#FFFFFF"/>',
+    '<path d="M24,24 Q10,6 6,20 Q8,32 24,26 Z" fill="#B15DE0"/><path d="M24,24 Q38,6 42,20 Q40,32 24,26 Z" fill="#2FA8E0"/><path d="M24,24 Q12,34 8,40 Q16,38 24,30 Z" fill="#FF5D8F"/><path d="M24,24 Q36,34 40,40 Q32,38 24,30 Z" fill="#FFC93C"/><rect x="22.5" y="16" width="3" height="20" rx="1.5" fill="#1B2B3A"/>',
+    '<circle cx="24" cy="28" r="15" fill="#3FC96E"/><circle cx="14" cy="16" r="7" fill="#3FC96E"/><circle cx="34" cy="16" r="7" fill="#3FC96E"/><circle cx="14" cy="16" r="3.5" fill="#FFFFFF"/><circle cx="34" cy="16" r="3.5" fill="#FFFFFF"/><circle cx="14" cy="16" r="1.6" fill="#1B2B3A"/><circle cx="34" cy="16" r="1.6" fill="#1B2B3A"/><path d="M16,32 Q24,38 32,32" stroke="#1B2B3A" stroke-width="2" fill="none" stroke-linecap="round"/>',
+    '<ellipse cx="22" cy="28" rx="16" ry="13" fill="#7BB661"/><path d="M22,15 L28,24 L22,33 L16,24 Z" fill="#5A9A47"/><path d="M8,28 L16,24 L16,32 Z" fill="#5A9A47"/><path d="M36,28 L28,24 L28,32 Z" fill="#5A9A47"/><circle cx="38" cy="26" r="6" fill="#8FCB78"/><circle cx="41" cy="24" r="1.6" fill="#1B2B3A"/>'
+  ];
+  var FACT_BGS = ["#FDE7D0","#FFF3C4","#E8ECEF","#F0E0FA","#DFF6E4","#E3F0DC"];
+
+  var FACTS = [
+    "En un puñado de tierra sana hay más organismos vivos que personas en toda la Tierra: miles de millones, invisibles a simple vista.",
+    "Los árboles de un bosque se avisan entre ellos cuando hay una plaga, usando señales químicas y una red de raíces y hongos bajo tierra — algunos científicos la llaman \"la internet del bosque\".",
+    "El organismo vivo más grande del planeta no es una ballena ni un árbol: es un hongo subterráneo que se extiende por varios kilómetros bajo tierra en Oregón, EE. UU.",
+    "El peso de todas las hormigas del mundo juntas supera el peso de todos los seres humanos juntos.",
+    "Las tortugas marinas recién nacidas encuentran el camino al mar guiándose por el campo magnético de la Tierra, como si llevaran una brújula por dentro.",
+    "El agua que tomas hoy lleva circulando por el planeta desde hace millones de años. Es muy probable que esas mismas moléculas alguna vez cayeron como lluvia sobre los dinosaurios.",
+    "La selva amazónica produce su propia lluvia: el agua que sueltan sus árboles sube, forma nubes, y vuelve a caer sobre el mismo bosque, una y otra vez.",
+    "Casi todo el plástico que se ha fabricado en la historia sigue existiendo en algún lugar del planeta — no desaparece, solo se rompe en pedazos cada vez más chiquitos.",
+    "Según varios estudios, la ganadería genera más gases de efecto invernadero que todo el transporte del mundo junto: carros, aviones y barcos incluidos.",
+    "El océano ha absorbido la mayor parte del calor extra que ha generado la actividad humana — sin él, ya sentiríamos un planeta mucho más caliente.",
+    "Hay murciélagos que son polinizadores clave: sin ellos, plantas como el agave (de donde sale el tequila) tendrían serios problemas para reproducirse.",
+    "Una lombriz de tierra puede comerse su propio peso en tierra cada día, y la deja más fértil de lo que estaba.",
+    "Los pulpos tienen tres corazones y sangre azul: dos corazones bombean sangre a las branquias y el tercero al resto del cuerpo.",
+    "Algunas aves migratorias vuelan miles de kilómetros sin parar, y logran dormir en pleno vuelo con la mitad del cerebro descansando a la vez.",
+    "Un colibrí puede batir sus alas más de cincuenta veces por segundo — tan rápido que el ojo humano solo ve un borrón.",
+    "Las abejas \"votan\" entre ellas para decidir dónde construir su próxima colmena, convenciendo al resto con una especie de danza.",
+    "Hay más árboles en la Tierra que estrellas en toda la Vía Láctea.",
+    "El polvo que arrastra el viento desde el desierto del Sahara cruza el océano Atlántico entero y termina fertilizando la selva amazónica.",
+    "Cuando una ballena muere, su cuerpo se hunde hasta el fondo del mar y guarda ahí el carbono que tenía adentro durante siglos.",
+    "Un solo árbol grande puede liberar cientos de litros de agua al aire en un día caluroso, solo a través de sus hojas — como un aire acondicionado natural.",
+    "Las ranas también respiran por la piel, no solo por los pulmones — por eso son de las primeras en desaparecer cuando el agua se contamina.",
+    "Bajo tierra, los hongos pueden conectar las raíces de árboles distintos, incluso de especies diferentes, y ayudarles a compartir nutrientes entre ellos.",
+    "El koala casi no toma agua directamente: obtiene casi toda la que necesita de las hojas de eucalipto que come.",
+    "Una colonia de abejas puede visitar varios millones de flores para producir un solo kilo de miel.",
+    "Los elefantes pueden sentir las pisadas de otros elefantes a kilómetros de distancia, a través de vibraciones que viajan por el suelo.",
+    "El canto de la ballena azul es uno de los sonidos más fuertes que produce un ser vivo — puede viajar cientos de kilómetros bajo el agua.",
+    "Existen semillas guardadas durante cientos de años que aún así germinan cuando por fin encuentran agua y luz."
   ];
 
-  var factsRowEl = document.getElementById("fun-facts-row");
   var factModalBackdrop = document.getElementById("fact-modal-backdrop");
   var factModalIcon = document.getElementById("fact-modal-icon");
   var factModalName = document.getElementById("fact-modal-name");
   var factModalText = document.getElementById("fact-modal-text");
+  var lastFactIdx = -1;
 
-  CRITTERS.forEach(function(c){
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "critter-btn";
-    btn.title = c.cta;
-    btn.innerHTML = "<span class='critter-badge' style='--critter-bg:" + c.bg + "'><svg viewBox='0 0 48 48'>" + c.icon + "</svg></span>";
-    btn.addEventListener("click", function(){
-      factModalIcon.style.setProperty("--critter-bg", c.bg);
-      factModalIcon.innerHTML = "<svg viewBox='0 0 48 48'>" + c.icon + "</svg>";
-      factModalName.textContent = c.name;
-      factModalText.textContent = c.fact;
-      factModalBackdrop.classList.add("open");
-    });
-    factsRowEl.appendChild(btn);
+  var FACT_HEADLINES = ["¡GUAU!", "¡NO TE LO VAS A CREER!", "¡EN SERIO!", "¡ALUCINANTE!", "¡ESTO ES REAL!", "¡MENTE VOLADA!"];
+
+  document.getElementById("fact-corner-tab").addEventListener("click", function(){
+    var tabEl = this;
+    tabEl.classList.add("clicked");
+    setTimeout(function(){ tabEl.classList.remove("clicked"); }, 220);
+
+    var idx = Math.floor(Math.random() * FACTS.length);
+    if (idx === lastFactIdx) idx = (idx + 1) % FACTS.length;
+    lastFactIdx = idx;
+    var iconIdx = Math.floor(Math.random() * FACT_ICONS.length);
+    factModalIcon.style.setProperty("--critter-bg", FACT_BGS[iconIdx]);
+    factModalIcon.innerHTML = "<svg viewBox='0 0 48 48'>" + FACT_ICONS[iconIdx] + "</svg>";
+    factModalName.textContent = FACT_HEADLINES[Math.floor(Math.random() * FACT_HEADLINES.length)];
+    factModalText.textContent = FACTS[idx];
+    factModalBackdrop.classList.add("open");
   });
 
   function closeModal(el){ el.classList.remove("open"); }
@@ -1075,7 +1127,6 @@
     catTagEl.style.setProperty("--cat-color", cat.color);
     var illustEl = document.getElementById("quiz-illustration");
     illustEl.innerHTML = CATEGORY_ART[q.cat];
-    illustEl.style.setProperty("--critter-bg", "color-mix(in srgb, " + cat.color + " 20%, white)");
     qTextEl.textContent = q.text;
     qFactEl.textContent = "💡 " + q.fact;
     qCounterEl.textContent = "Pregunta " + (current+1) + " de " + TOTAL;
@@ -1178,14 +1229,17 @@
     }
 
     var tier;
-    if (planets <= 1.8) tier = { label:"🌱 Huella baja", msg:"Tu huella está por debajo del promedio. Aun así, siempre hay hábitos que se pueden seguir mejorando." };
-    else if (planets <= 2.6) tier = { label:"🌤️ Huella moderada", msg:"Tu huella es moderada, parecida a la de muchas personas en contextos similares al tuyo. Hay varias oportunidades de mejora." };
-    else if (planets <= 3.4) tier = { label:"🔥 Huella alta", msg:"Tu huella es alta. Algunos hábitos cotidianos están pesando bastante para el planeta." };
-    else tier = { label:"🌋 Huella muy alta", msg:"Tu huella es muy alta. Si todo el mundo viviera así, necesitaríamos varios planetas Tierra." };
-    document.getElementById("tier-msg").innerHTML = "<b>" + tier.label + "</b>" + tier.msg;
+    if (planets <= 1.8) tier = { label:"🌱 Huella baja", msg:"Tu huella está por debajo del promedio. Aun así, siempre hay hábitos que se pueden seguir mejorando.", bg:"#E8F8ED", border:"#BFE8CC" };
+    else if (planets <= 2.6) tier = { label:"🌤️ Huella moderada", msg:"Tu huella es moderada, parecida a la de muchas personas en contextos similares al tuyo. Hay varias oportunidades de mejora.", bg:"#FFF6DC", border:"#F5E1A0" };
+    else if (planets <= 3.4) tier = { label:"🔥 Huella alta", msg:"Tu huella es alta. Algunos hábitos cotidianos están pesando bastante para el planeta.", bg:"#FFE9DC", border:"#F5C4A0" };
+    else tier = { label:"🌋 Huella muy alta", msg:"Tu huella es muy alta. Si todo el mundo viviera así, necesitaríamos varios planetas Tierra.", bg:"#FDE4E4", border:"#F0B4B4" };
+    var tierMsgEl = document.getElementById("tier-msg");
+    tierMsgEl.innerHTML = "<b>" + tier.label + "</b>" + tier.msg;
+    tierMsgEl.style.background = tier.bg;
+    tierMsgEl.style.borderColor = tier.border;
 
     // Comparación con otros países
-    document.getElementById("cmp-sub").textContent = "Tu huella equivale aproximadamente a " + hag.toFixed(1) + " hectáreas globales (hag) por persona. Así se compara con otros lugares:";
+    document.getElementById("cmp-sub").textContent = "Así se compara tu resultado con otros lugares:";
     var items = COUNTRY_DATA.slice();
     items.push({ name:"Tú", value:hag, you:true });
     items.sort(function(a,b){ return a.value - b.value; });
